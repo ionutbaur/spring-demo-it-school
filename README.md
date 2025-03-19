@@ -1,2 +1,2 @@
 # spring-demo-it-school
-IIT School demo project using Spging Boot
+IT School demo project using Spring Boot

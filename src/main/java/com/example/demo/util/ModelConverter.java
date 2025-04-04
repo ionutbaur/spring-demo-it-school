@@ -23,9 +23,14 @@ public class ModelConverter {
         AddressDTO addressDTO = convertToAddressDTO(address);
 
         List<Order> orders = user.getOrders();
-        List<OrderDTO> orderDTOs = orders.stream()
-                .map(ModelConverter::convertToOrderDTO)
-                .toList();
+
+        // if 'orders' is null, return empty list - same as checking 'orderDTOs' for null in below 'convertToUser' method,
+        // but all in nested functional style (can be difficult to read)
+        List<OrderDTO> orderDTOs = Optional.ofNullable(orders) // potentially null 'orders' list - if 'orders' is null jump directly to 'orElse'; if not null, below map is executed
+                .map(order -> order.stream() // if the Optional is present ('orders' list not null) map the list to its stream
+                        .map(ModelConverter::convertToOrderDTO) // map each Order element from the above stream to OrderDTO (convert it)
+                        .toList()) // collect the stream to a new list - will be a list of OrderDTO because of the previous map
+                .orElse(Collections.emptyList()); // if the Optional is empty ('orders' list is null), return an empty list
 
         return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getAge(), addressDTO, orderDTOs);
     }
@@ -35,6 +40,9 @@ public class ModelConverter {
         Address address = convertToAddress(addressDTO);
 
         List<OrderDTO> orderDTOs = userDTO.orders();
+
+        // if orderDTOs is null, return empty list - traditional style of checking the orderDTOs for null,
+        // then functional style of mapping each element to Order
         List<Order> orders = Collections.emptyList();
         if (orderDTOs != null) {
             orders = orderDTOs.stream()

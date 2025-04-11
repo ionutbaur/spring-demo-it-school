@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.User;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.model.UserDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(long id) {
         User foundUser = userRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new UserNotFoundException("I can't find user with id: " + id));
         return ModelConverter.convertToUserDTO(foundUser);
     }
 

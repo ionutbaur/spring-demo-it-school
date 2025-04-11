@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.exception.InvalidInputException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -14,4 +15,13 @@ public record UserDTO(@JsonProperty(access = JsonProperty.Access.READ_ONLY) // t
                       AddressDTO address,
                       @JsonProperty(access = JsonProperty.Access.READ_ONLY) // read-only - don't provide it on request when creating a new UserDTO object
                       List<OrderDTO> orders) {
+
+    @Override
+    public int age() {
+        if (age < 0 ) {
+            throw new InvalidInputException("Age cannot be negative");
+        }
+
+        return age;
+    }
 }

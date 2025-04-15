@@ -1,18 +1,11 @@
 package com.example.demo.exception;
 
-public class InvalidInputException extends RuntimeException {
-  private String someField;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-  public InvalidInputException(String message) {
-    super(message);
-  }
+public class InvalidInputException extends ResponseStatusException {
 
-  public InvalidInputException(String message, String someField) {
-    super(message);
-    this.someField = someField;
-  }
-
-  public String getSomeField() {
-    return someField;
-  }
+    public InvalidInputException(String message) {
+        super(HttpStatus.BAD_REQUEST, message);
+    }
 }

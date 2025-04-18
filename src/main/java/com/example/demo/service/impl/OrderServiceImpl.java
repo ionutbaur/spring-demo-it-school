@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.model.OrderDTO;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO placeOrder(long userId, OrderDTO orderDTO) {
         User user = userRepository.findById(userId)
-                .orElseThrow();
+                .orElseThrow(() -> new UserNotFoundException("I can't find user with id: " + userId));
         Order order = new Order(orderDTO.description(), user);
         Order createdOrder = orderRepository.save(order);
 

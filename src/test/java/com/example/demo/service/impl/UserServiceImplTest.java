@@ -8,18 +8,24 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
 
+    /**
+     * Test method for {@link UserServiceImpl#deleteUser(long)}.
+     */
     @Test
     void deleteUser() {
+        // create an instance of UserServiceImpl with the mocked UserRepository as dependency
         UserService userService = new UserServiceImpl(userRepository);
+
+        // call the method we want to test
         userService.deleteUser(1L);
+
+        // verify that the deleteById method of the UserRepository was called with the correct argument
         Mockito.verify(userRepository).deleteById(1L);
     }
 }

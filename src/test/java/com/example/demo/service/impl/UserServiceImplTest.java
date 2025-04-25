@@ -25,6 +25,7 @@ class UserServiceImplTest {
         // call the method we want to test
         userService.deleteUser(1L);
 
+        // since the above method is void and there is nothing returned to assert,
         // verify that the deleteById method of the UserRepository was called with the correct argument
         Mockito.verify(userRepository).deleteById(1L);
     }
